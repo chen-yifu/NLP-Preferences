@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="interface.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+
+  <meta charset="utf-8">
+  <title>NLP Preferences</title>
+</head>
+<body>
+
+  <script type="text/javascript">
+    function passwordCheck(){
+      var password = prompt("Please enter the last name of Yifu, all lower case.");
+      if (password==="chen"){
+        sessionStorage.setItem('status','loggedIn')
+        window.location="interface.html";
+      } else {
+        while(password !=="chen"){
+          password = prompt("Sorry. Please enter the last name of Yifu, all lower case.");
+        }
+        sessionStorage.setItem('status','loggedIn')
+        window.location="interface.html";
+      }
+    }
+    window.onload=passwordCheck;
+  </script>
+
+  <div style="position: relative; top: 10%;left: 20%; padding:30px">
+    To report issues, please contact: nlp.preferences@gmail.com
+  </div>
+
+</body>
+</html>

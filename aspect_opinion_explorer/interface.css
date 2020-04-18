@@ -1,0 +1,86 @@
+.CellWithComment span{
+  display: none;
+  color: #000;
+  text-decoration: none;
+  padding: 0px;
+}
+
+.CellWithComment:hover span{
+  display: block;
+  position: relative;
+  font-size: 13px;
+  margin: 0px 0px;
+  max-width:500px;
+  word-wrap:break-word;
+}
+
+
+
+body {
+  margin: 0 auto;
+  padding: 0 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  color: #555;
+}
+
+table {
+  border: 0;
+  padding: 0;
+  margin: 0 0 20px 0;
+  border-collapse: collapse;
+}
+
+
+table th {
+  padding:10px;
+  text-align: left;
+  font-weight: bold;
+  line-height: 3em;
+  color: #FFF;
+  background-color: #555;
+  border: 1px solid #000;
+  float: none;
+}
+
+tbody {
+  height:800px;
+  overflow-y:auto;
+  display:block;
+  /* direction:rtl;
+  text-align:left;*/
+}
+thead {
+  display:block;
+  font-size:13px;
+}
+
+tbody td {
+  /* white-space:nowrap; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 10px;
+  line-height: 20px;
+  border: 1px solid #E0E0E0;
+  min-width: 120px;
+  max-width: 500px;
+  overflow: auto;
+  text-overflow: inherit;
+  white-space: pre-line;
+  float: none;
+}
+
+tbody tr:nth-child(2n) {
+  background-color: #F7F7F7;
+}
+
+tbody tr:hover {
+  background-color: #EEEEEE;
+}
+
+header {
+  padding-top: 30px;
+  align-items: center;
+  font-size: 30px;
+}

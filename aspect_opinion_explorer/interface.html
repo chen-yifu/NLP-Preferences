@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="interface.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+
+  <meta charset="utf-8">
+  <title>NLP Preferences</title>
+</head>
+<body>
+  <script type="text/javascript">
+  if (sessionStorage.getItem('status') != null){
+    //redirect to page
+  }else{
+    window.location="index.html";//show validation message
+  }
+</script>
+<div class="searchArea" style="position: relative; top: 10%;left: 10%; padding:30px; margin-top:10px">
+  <h2>Aspect-Opinion Pair Explorer</h2>
+  <form id="searchBar">
+    <input type="text" placeholder="Search term..." size=40 style="font-size:16pt;">
+    <select id="searchMode" width=200px style="font-size:50pt;">
+      <option value="post_body">mentioned in same post</option>
+      <option value="sentence_body">mentioned in same sentence</option>
+      <option value="post_thread_title">thread title</option>
+      <option value="opinion_word_name">opinion word</option>
+      <option value="describes_aspect_name">aspect term</option>
+      <option value="describes_110_characters_treatment_name">treatment name within 110 characters before aspect</option>
+      <option value="describes_220_characters_treatment_name">treatment name within 220 characters before aspect</option>
+      <option value="author_username">author username</option>
+    </select>
+  </form>
+</div>
+<span id="displayingNPosts" style="position: relative; top: 10%;left: 10%; padding:30px">There are 365 aspect-opinion pairs in the database.</span>
+<div style="  position: relative; top: 10%; left:10%; padding:30px">
+  <table style="border:1px solid black; width=1500px;">
+    <thead width="200%">
+      <tr>
+        <th width='166px'>Aspect Name</th>
+        <th width='120px'>Opinion Word</th>
+        <th width='120px'>Polarity</th>
+        <th width='479px'>Sentence Body</th>
+        <th width='154px'>Author Username</th>
+        <th width='120px'>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody id="dataArea">
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+var allData;
+
+function readTextFile(file, callback) {
+  var rawFile = new XMLHttpRequest();
+  rawFile.overrideMimeType("application/json");
+  rawFile.open("GET", file, true);
+  rawFile.onreadystatechange = function() {
+    if (rawFile.readyState === 4 && rawFile.status == "200") {
+      callback(rawFile.responseText);
+    }
+  }
+  rawFile.send(null);
+}
+
+function showAllData(data) {
+  var dataArea = document.getElementById('dataArea');
+  dataArea.innerHTML = "";
+  var i = 0;
+  data.forEach(function(obj) {
+    dataArea.insertAdjacentHTML('beforeend',
+    "<tr class='resizable_body'"
+    + "><td width='171px'>" + obj['describes_aspect_name']
+    + "</td><td width='120px'>" + obj['describes_opinion_word_name']
+    + "</td><td width='120px'>" + obj['opinion_word_polarity']
+    + "</td><td class='CellWithComment' width='489px'>" + obj['sentence_body'] + '<span  class="CellComment" style="border: 1px white solid; margin-top:20px padding:10px">'+ obj['post_body']  +'</span>'
+    + "</td><td class='CellWithComment' width='154px'>" + obj['author_username'] + '<span class="CellComment">'+ obj['author_flair']  +'</span>'
+    + "</td><td width='120px'>" + obj['post_timestamp'].substring(0,16)
+
+    // + "<td>" + obj['post'] TODO post score tooltip
+    + "</td></tr>");
+    i++;
+  })
+
+}
+
+readTextFile("120d9n0n7387f3n94nd03h27ndh0n28dh07nw2hd2nsdsdh0n10d.json", function(text){
+  var data = JSON.parse(text);
+  showAllData(data);
+  allData = data;
+});
+
+// search
+const searchBar = document.forms['searchBar'].querySelector('input');
+const searchMode = $("#searchMode");
+
+function search(e) {
+  const term = searchBar.value.toLowerCase();
+  var tempData = [];
+  var count = 0;
+  var searchMode = document.forms['searchBar'].querySelector('select').value;
+  allData.forEach(function(obj) {
+    if (obj[searchMode].toLowerCase().indexOf(term) != -1) {
+      tempData.push(obj);
+      count++;
+    }
+  }
+)
+$("#displayingNPosts").html("We found " + count + " aspect-opinion pairs.");
+showAllData(tempData);
+}
+
+searchBar.addEventListener('keyup', search);
+searchMode.on('change', search)
+
+
+// tooltip
+
+$(".authorTooltip").hover(function(){
+  $(this).css("background-color", "yellow");
+}, function(){
+  $(this).css("background-color", "pink");
+});
+
+</script>
+<div style="position: relative; top: 10%;left: 10%; padding:30px">
+  To report issues, please contact: nlp.preferences@gmail.com
+</div>
+
+</body>
+</html>
